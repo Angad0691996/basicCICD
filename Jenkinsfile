@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_CREDENTIALS = credentials('6a2a19c4-8441-4424-bbea-f45a7f1319c1')
+        EC2_CREDENTIALS = credentials('jenkins-ubuntu-key')
     }
 
     stages {
@@ -26,7 +26,7 @@ pipeline {
 
         stage('Deploy to EC2') {
             steps {
-                sshagent(credentials: ['6a2a19c4-8441-4424-bbea-f45a7f1319c1']) {
+                sshagent(credentials: ['jenkins-ubuntu-key']) {
                     sh '''
                     ssh -o StrictHostKeyChecking=no ubuntu@52.66.207.54 "
                         sudo pkill -f app.py || true;
@@ -46,5 +46,6 @@ pipeline {
         }
     }
 }
+
 
 
