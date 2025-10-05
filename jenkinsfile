@@ -10,7 +10,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     credentialsId: 'git-token',
-                    url: 'https://github.com/Angad0691996/BasicCICD.git'
+                    url: 'https://github.com/Angad0691996/basicCICD.git'
             }
         }
 
@@ -30,7 +30,7 @@ pipeline {
                         pkill -f app.py || true;
                         cd /home/ubuntu &&
                         rm -rf BasicCICD &&
-                        git clone https://github.com/Angad0691996/BasicCICD.git &&
+                        git clone https://github.com/Angad0691996/basicCICD.git &&
                         cd BasicCICD &&
                         python3 -m venv venv &&
                         . venv/bin/activate &&
@@ -43,3 +43,4 @@ pipeline {
         }
     }
 }
+
