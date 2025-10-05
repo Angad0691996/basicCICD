@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    environment {
+        EC2_CREDENTIALS = credentials('jenkins-ubuntu-key')
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'git-token',
+                    url: 'https://github.com/Angad0691996/BasicCICD.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'sudo apt update && sudo apt install -y python3-venv'
+                sh 'python3 -m venv venv'
+                sh '. venv/bin/activate && pip install -r requirements.txt'
+            }
+        }
+
+        stage('Deploy to EC2') {
+            steps {
+                sshagent(credentials: ['jenkins-ubuntu-key']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@52.66.207.54 "
+                        pkill -f app.py || true;
+                        cd /home/ubuntu &&
+                        rm -rf BasicCICD &&
+                        git clone https://github.com/Angad0691996/BasicCICD.git &&
+                        cd BasicCICD &&
+                        python3 -m venv venv &&
+                        . venv/bin/activate &&
+                        pip install -r requirements.txt &&
+                        nohup python3 app.py > log.txt 2>&1 &
+                    "
+                    '''
+                }
+            }
+        }
+    }
+}
