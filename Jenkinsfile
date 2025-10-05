@@ -29,9 +29,9 @@ pipeline {
                 sshagent(credentials: ['jenkins-ubuntu-key']) {
                     sh '''
                     ssh -o StrictHostKeyChecking=no ubuntu@52.66.207.54 "
-                        pkill -f app.py || true;
+                        sudo pkill -f app.py || true;
                         cd /home/ubuntu &&
-                        rm -rf basicCICD &&
+                        sudo rm -rf basicCICD &&
                         git clone https://github.com/Angad0691996/basicCICD.git &&
                         cd basicCICD &&
                         sudo apt update && sudo apt install -y python3-venv &&
@@ -46,3 +46,4 @@ pipeline {
         }
     }
 }
+
