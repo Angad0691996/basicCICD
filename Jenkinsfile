@@ -1,4 +1,30 @@
-stage('Deploy to EC2') {
+pipeline {
+    agent any
+
+    environment {
+        EC2_CREDENTIALS = credentials('jenkins-ubuntu-key')
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'git-token',
+                    url: 'https://github.com/Angad0691996/basicCICD.git'
+            }
+        }
+
+        stage('Install Dependencies (Jenkins Host)') {
+            steps {
+                sh '''
+                    sudo apt update && sudo apt install -y python3-venv
+                    python3 -m venv venv
+                    . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
+                '''
+            }
+        }
+
+       stage('Deploy to EC2') {
     steps {
         sshagent(credentials: ['jenkins-ubuntu-key']) {
             sh '''
