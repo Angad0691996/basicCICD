@@ -28,7 +28,7 @@ pipeline {
             steps {
                 sshagent(credentials: ['jenkins-ubuntu-key']) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@52.66.207.54 "
+                    ssh -o StrictHostKeyChecking=no ubuntu@15.206.173.211"
                         sudo pkill -f app.py || true;
                         cd /home/ubuntu &&
                         sudo rm -rf basicCICD &&
@@ -46,6 +46,7 @@ pipeline {
         }
     }
 }
+
 
 
 
