@@ -50,10 +50,11 @@ pipeline {
                         nohup python3 app.py > log.txt 2>&1 &
                         sleep 3
                         echo "✅ Application deployed and running!"
-                    EOF
+EOF
                     '''
                 }
             }
         }
     }
 }
+
